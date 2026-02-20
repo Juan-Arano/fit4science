@@ -285,9 +285,9 @@
   </main>
 
   <script>
-    // Supabase project placeholders. Replace with real values before production.
-    const SUPABASE_URL = "REEMPLAZAR";
-    const SUPABASE_ANON_KEY = "REEMPLAZAR";
+    // Supabase public project config.
+    const SUPABASE_URL = "https://soptgmteligjatbvhdxe.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_kVAL0WLjZEgPiAup6U8Miw_qJXVOO7O";
 
     const stateLoading = document.getElementById("state-loading");
     const stateForm = document.getElementById("state-form");
@@ -372,8 +372,8 @@
         return;
       }
 
-      if (SUPABASE_URL === "REEMPLAZAR" || SUPABASE_ANON_KEY === "REEMPLAZAR") {
-        showFatalError("Falta configurar SUPABASE_URL y SUPABASE_ANON_KEY en /reset-password/index.html.");
+      if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+        showFatalError("Falta configuración de Supabase para restablecer la contraseña.");
         return;
       }
 
