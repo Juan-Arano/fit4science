@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Fit4Science · Restablecer contraseña</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg-grad: linear-gradient(135deg, #1f7aec 0%, #6366f1 50%, #8b5cf6 100%);
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --input-border: #cbd5e1;
+      --input-focus: #2563eb;
+      --button-grad: linear-gradient(135deg, #1f7aec 0%, #6366f1 50%, #8b5cf6 100%);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100dvh;
+      background: var(--bg-grad);
+      color: var(--text-main);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: min(100%, 440px);
+      background: var(--card-bg);
+      border-radius: 22px;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+      padding: 28px 22px 24px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      margin: 0 auto 14px;
+      background: rgba(99, 102, 241, 0.12);
+      display: grid;
+      place-items: center;
+      font-size: 34px;
+    }
+
+    .title {
+      font-size: 26px;
+      line-height: 1.15;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .state {
+      display: none;
+    }
+
+    .state.active {
+      display: block;
+    }
+
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0 2px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .spinner {
+      width: 26px;
+      height: 26px;
+      border: 3px solid #dbeafe;
+      border-top-color: #2563eb;
+      border-radius: 999px;
+      animation: spin 0.9s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .form {
+      display: grid;
+      gap: 14px;
+      margin-top: 2px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 13px;
+      color: #334155;
+      font-weight: 700;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--input-border);
+      font-size: 15px;
+      color: #0f172a;
+      outline: none;
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+
+    input:focus {
+      border-color: var(--input-focus);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+    }
+
+    .hint {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: -2px;
+    }
+
+    .error-msg {
+      min-height: 20px;
+      font-size: 13px;
+      color: var(--danger);
+      line-height: 1.4;
+      margin-top: -2px;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      padding: 13px 14px;
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      background: var(--button-grad);
+      cursor: pointer;
+      transition: transform .12s ease, filter .18s ease;
+    }
+
+    .btn:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+      transform: none;
+      filter: grayscale(0.1);
+    }
+
+    .btn:not(:disabled):active {
+      transform: scale(0.98);
+    }
+
+    .btn-secondary {
+      background: #eef2ff;
+      color: #3730a3;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    .success-box,
+    .error-box {
+      text-align: center;
+      padding-top: 2px;
+    }
+
+    .success-icon,
+    .error-icon {
+      font-size: 42px;
+      margin-bottom: 10px;
+      line-height: 1;
+    }
+
+    .success-icon {
+      color: var(--success);
+    }
+
+    .error-icon {
+      color: var(--danger);
+    }
+
+    .success-title,
+    .error-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: #0f172a;
+    }
+
+    .success-text,
+    .error-text {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+
+    .open-app {
+      display: inline-block;
+      width: 100%;
+      margin-top: 16px;
+      text-decoration: none;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="card" role="main" aria-live="polite">
+    <div class="header">
+      <div class="icon">🔐</div>
+      <h1 class="title" id="screen-title">Verificando enlace...</h1>
+      <p class="subtitle" id="screen-subtitle">Estamos validando tu enlace de recuperación.</p>
+    </div>
+
+    <section class="state active" id="state-loading">
+      <div class="loading">
+        <div class="spinner" aria-hidden="true"></div>
+        <span>Verificando enlace...</span>
+      </div>
+    </section>
+
+    <section class="state" id="state-form">
+      <form id="reset-form" class="form" novalidate>
+        <div class="field">
+          <label for="password">Nueva contraseña</label>
+          <input id="password" type="password" autocomplete="new-password" placeholder="Mínimo 6 caracteres" required minlength="6" />
+        </div>
+
+        <div class="field">
+          <label for="password-confirm">Confirmar contraseña</label>
+          <input id="password-confirm" type="password" autocomplete="new-password" placeholder="Repite la contraseña" required minlength="6" />
+        </div>
+
+        <p class="hint">Usa al menos 6 caracteres.</p>
+        <p id="form-error" class="error-msg"></p>
+
+        <button id="submit-btn" class="btn" type="submit">Actualizar contraseña</button>
+      </form>
+    </section>
+
+    <section class="state" id="state-success">
+      <div class="success-box">
+        <div class="success-icon">✔</div>
+        <h2 class="success-title">Contraseña actualizada correctamente</h2>
+        <p class="success-text">Ya puedes volver a Fit4Science e iniciar sesión con tu nueva contraseña.</p>
+        <a class="btn open-app" href="https://fit4science.vercel.app/">Abrir Fit4Science</a>
+      </div>
+    </section>
+
+    <section class="state" id="state-error">
+      <div class="error-box">
+        <div class="error-icon">⚠️</div>
+        <h2 class="error-title">No se pudo validar el enlace</h2>
+        <p class="error-text" id="error-text">El enlace ha expirado o no es válido.</p>
+        <a class="btn open-app" href="https://fit4science.vercel.app/">Abrir Fit4Science</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Supabase project placeholders. Replace with real values before production.
+    const SUPABASE_URL = "REEMPLAZAR";
+    const SUPABASE_ANON_KEY = "REEMPLAZAR";
+
+    const stateLoading = document.getElementById("state-loading");
+    const stateForm = document.getElementById("state-form");
+    const stateSuccess = document.getElementById("state-success");
+    const stateError = document.getElementById("state-error");
+
+    const titleEl = document.getElementById("screen-title");
+    const subtitleEl = document.getElementById("screen-subtitle");
+    const formEl = document.getElementById("reset-form");
+    const passwordEl = document.getElementById("password");
+    const passwordConfirmEl = document.getElementById("password-confirm");
+    const submitBtnEl = document.getElementById("submit-btn");
+    const formErrorEl = document.getElementById("form-error");
+    const errorTextEl = document.getElementById("error-text");
+
+    let supabaseClient = null;
+
+    function setState(nextState) {
+      stateLoading.classList.remove("active");
+      stateForm.classList.remove("active");
+      stateSuccess.classList.remove("active");
+      stateError.classList.remove("active");
+
+      if (nextState === "loading") {
+        titleEl.textContent = "Verificando enlace...";
+        subtitleEl.textContent = "Estamos validando tu enlace de recuperación.";
+        stateLoading.classList.add("active");
+        return;
+      }
+
+      if (nextState === "form") {
+        titleEl.textContent = "Crear nueva contraseña";
+        subtitleEl.textContent = "Introduce tu nueva contraseña para continuar.";
+        stateForm.classList.add("active");
+        return;
+      }
+
+      if (nextState === "success") {
+        titleEl.textContent = "Todo listo";
+        subtitleEl.textContent = "Tu contraseña se actualizó correctamente.";
+        stateSuccess.classList.add("active");
+        return;
+      }
+
+      titleEl.textContent = "Enlace no válido";
+      subtitleEl.textContent = "No podemos continuar con este enlace.";
+      stateError.classList.add("active");
+    }
+
+    function setFormError(message = "") {
+      formErrorEl.textContent = message;
+    }
+
+    function setFormLoading(isLoading) {
+      submitBtnEl.disabled = Boolean(isLoading);
+      submitBtnEl.textContent = isLoading ? "Actualizando..." : "Actualizar contraseña";
+    }
+
+    function parseRecoveryParams() {
+      const hashParams = new URLSearchParams((window.location.hash || "").replace(/^#/, ""));
+      const queryParams = new URLSearchParams(window.location.search || "");
+
+      const read = (key) => hashParams.get(key) || queryParams.get(key) || "";
+
+      return {
+        accessToken: read("access_token"),
+        refreshToken: read("refresh_token"),
+        type: String(read("type") || "").toLowerCase()
+      };
+    }
+
+    function showFatalError(message) {
+      errorTextEl.textContent = message;
+      setState("error");
+    }
+
+    async function initializeRecoveryFlow() {
+      setState("loading");
+
+      if (!window.supabase || typeof window.supabase.createClient !== "function") {
+        showFatalError("No se pudo cargar Supabase. Inténtalo de nuevo en unos minutos.");
+        return;
+      }
+
+      if (SUPABASE_URL === "REEMPLAZAR" || SUPABASE_ANON_KEY === "REEMPLAZAR") {
+        showFatalError("Falta configurar SUPABASE_URL y SUPABASE_ANON_KEY en /reset-password/index.html.");
+        return;
+      }
+
+      const { accessToken, refreshToken, type } = parseRecoveryParams();
+      if (!accessToken || !refreshToken || type !== "recovery") {
+        showFatalError("El enlace ha expirado o no es válido.");
+        return;
+      }
+
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        auth: {
+          persistSession: false,
+          autoRefreshToken: false,
+          detectSessionInUrl: false
+        }
+      });
+
+      const { error } = await supabaseClient.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken
+      });
+
+      if (error) {
+        showFatalError("El enlace de recuperación ha expirado o no es válido. Solicita uno nuevo.");
+        return;
+      }
+
+      // Clean URL tokens after successful session setup.
+      if (window.location.hash) {
+        history.replaceState({}, document.title, window.location.pathname);
+      }
+
+      setState("form");
+    }
+
+    async function handlePasswordSubmit(event) {
+      event.preventDefault();
+      setFormError("");
+
+      const password = String(passwordEl.value || "").trim();
+      const passwordConfirm = String(passwordConfirmEl.value || "").trim();
+
+      if (password.length < 6) {
+        setFormError("La contraseña debe tener al menos 6 caracteres.");
+        return;
+      }
+
+      if (password !== passwordConfirm) {
+        setFormError("Las contraseñas no coinciden.");
+        return;
+      }
+
+      if (!supabaseClient) {
+        showFatalError("No se pudo iniciar la sesión de recuperación. Vuelve a abrir el enlace.");
+        return;
+      }
+
+      setFormLoading(true);
+
+      const { error } = await supabaseClient.auth.updateUser({ password });
+
+      setFormLoading(false);
+
+      if (error) {
+        setFormError(error.message || "No se pudo actualizar la contraseña. Inténtalo de nuevo.");
+        return;
+      }
+
+      setState("success");
+    }
+
+    formEl.addEventListener("submit", handlePasswordSubmit);
+    initializeRecoveryFlow();
+  </script>
+</body>
+
+</html>
