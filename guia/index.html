@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guía de uso de Fit4Science | Registro de comidas, IA y progreso</title>
+  <meta name="description"
+    content="Guía visual y práctica para usar Fit4Science: registro, login, objetivos, comidas, escáner, IA, macros, historial y ayuda.">
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --surface: #ffffff;
+      --surface-2: #f9faff;
+      --text: #111827;
+      --muted: #64748b;
+      --primary: #3b82f6;
+      --primary-2: #7c3aed;
+      --ok: #16a34a;
+      --warn: #d97706;
+      --danger: #dc2626;
+      --shadow: 0 14px 34px rgba(15, 23, 42, .08);
+      --radius: 16px;
+      --radius-sm: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(1200px 500px at 70% -10%, rgba(59, 130, 246, .22), transparent), var(--bg);
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 24px;
+      width: min(1280px, 96vw);
+      margin: 24px auto 64px;
+    }
+
+    .side {
+      position: sticky;
+      top: 16px;
+      height: fit-content;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      font-weight: 800;
+      font-size: 20px;
+      color: #1e293b;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 99px;
+      background: linear-gradient(130deg, var(--primary), var(--primary-2));
+      box-shadow: 0 0 0 8px rgba(59, 130, 246, .12);
+    }
+
+    .search {
+      width: 100%;
+      border: 1px solid #dbe3f1;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+      margin-bottom: 14px;
+    }
+
+    .toc {
+      display: grid;
+      gap: 8px;
+    }
+
+    .toc a {
+      display: block;
+      color: #334155;
+      background: var(--surface-2);
+      border: 1px solid #e7ecf5;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      border-color: #bfd4ff;
+      color: var(--primary);
+      background: #f2f7ff;
+    }
+
+    .content {
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #1d4ed8, #7c3aed);
+      color: #fff;
+      border-radius: 22px;
+      padding: 26px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(26px, 4vw, 38px);
+      line-height: 1.1;
+    }
+
+    .hero p {
+      margin: 0 0 16px;
+      max-width: 800px;
+      color: rgba(255, 255, 255, .9);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0 16px;
+    }
+
+    .chip {
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .14);
+      border: 1px solid rgba(255, 255, 255, .22);
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      padding: 11px 15px;
+      font-weight: 700;
+      font-size: 14px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn.primary {
+      background: #fff;
+      color: #1e3a8a;
+    }
+
+    .btn.secondary {
+      background: transparent;
+      border-color: rgba(255, 255, 255, .35);
+      color: #fff;
+    }
+
+    .section {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    .section h2 {
+      margin: 0 0 8px;
+      font-size: clamp(22px, 2vw, 28px);
+      line-height: 1.2;
+    }
+
+    .section .lead {
+      color: var(--muted);
+      margin: 0 0 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      border: 1px solid #e5ebf5;
+      border-radius: var(--radius-sm);
+      background: #fff;
+      padding: 14px;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .step-list {
+      margin: 0;
+      padding-left: 18px;
+      color: #1f2937;
+      display: grid;
+      gap: 6px;
+      font-size: 14px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      font-size: 12px;
+      padding: 5px 9px;
+      margin-bottom: 8px;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+
+    .ok {
+      color: #166534;
+      background: #dcfce7;
+      border-color: #86efac;
+    }
+
+    .warn {
+      color: #92400e;
+      background: #fef3c7;
+      border-color: #fcd34d;
+    }
+
+    .neutral {
+      color: #1e3a8a;
+      background: #dbeafe;
+      border-color: #93c5fd;
+    }
+
+    figure {
+      margin: 10px 0 0;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #eef2f9;
+      border: 1px solid #dde5f3;
+    }
+
+    figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    figcaption {
+      font-size: 12px;
+      color: #475569;
+      padding: 8px 10px;
+      background: #f8fbff;
+      border-top: 1px solid #dde5f3;
+    }
+
+    .timeline {
+      margin: 0;
+      padding-left: 20px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .timeline li {
+      padding-left: 6px;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .check-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 14px;
+      color: #1f2937;
+      border: 1px solid #e4ebf6;
+      border-radius: 10px;
+      padding: 10px;
+      background: #fbfdff;
+    }
+
+    .check-item input {
+      margin-top: 2px;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 880px;
+      background: #fff;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 10px;
+      border-bottom: 1px solid #e2e8f0;
+      font-size: 13px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f8fafc;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: #475569;
+    }
+
+    details {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: #fff;
+    }
+
+    details + details {
+      margin-top: 10px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .footer-box {
+      background: #0f172a;
+      color: #dbeafe;
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .small {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    @media (max-width: 1024px) {
+      .page {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .side {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <aside class="side">
+      <div class="brand"><span class="dot"></span> Guía Fit4Science</div>
+      <input id="toc-search" class="search" type="search" placeholder="Filtrar secciones...">
+      <nav class="toc" id="toc-links">
+        <a href="#primeros-pasos">Primeros pasos</a>
+        <a href="#configuracion-inicial">Configuración inicial</a>
+        <a href="#registro-comidas">Registrar comidas</a>
+        <a href="#progreso">Entender tu progreso</a>
+        <a href="#funciones-avanzadas">Funciones avanzadas</a>
+        <a href="#ayuda">Ayuda y soporte</a>
+        <a href="#flujo-diario">Flujo diario recomendado</a>
+        <a href="#auditoria">Cobertura de auditoría</a>
+        <a href="#faq">Preguntas frecuentes</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <section class="hero">
+        <h1>Guía de uso de Fit4Science</h1>
+        <p>Documentación visual para usar la app desde cero: registro, objetivos, registro de comidas, escáner, IA y
+          seguimiento diario. Auditoría real de UI y flujos detectados en la app.</p>
+        <div class="chips">
+          <span class="chip">Auditada: 6 marzo 2026</span>
+          <span class="chip">Idioma: Español</span>
+          <span class="chip">Enfocada a usuarios finales</span>
+        </div>
+        <div class="cta-row">
+          <a class="btn primary" href="https://fit4science-app.vercel.app/planner.html" target="_blank"
+            rel="noopener">Abrir app web</a>
+          <a class="btn secondary" href="https://fit4science.vercel.app" target="_blank" rel="noopener">Abrir enlace de
+            cuenta</a>
+          <a class="btn secondary" href="https://fit4science.vercel.app/legal/privacy.html" target="_blank"
+            rel="noopener">Política de privacidad</a>
+        </div>
+      </section>
+
+      <section class="section" id="primeros-pasos">
+        <h2>Primeros pasos</h2>
+        <p class="lead">Cómo entrar a Fit4Science y resolver el flujo de acceso inicial.</p>
+        <div class="grid">
+          <article class="card">
+            <span class="status ok">✅ Verificado con captura</span>
+            <h3>1) Crear cuenta (email)</h3>
+            <ol class="step-list">
+              <li>Abre la pestaña <strong>Crear Cuenta</strong>.</li>
+              <li>Completa nombre, email y contraseña.</li>
+              <li>Pulsa <strong>Crear Cuenta</strong>.</li>
+            </ol>
+            <figure>
+              <img src="./assets/screenshots/auth-register.png" alt="Pantalla de creación de cuenta en Fit4Science">
+              <figcaption>Pantalla real: creación de cuenta por email.</figcaption>
+            </figure>
+          </article>
+          <article class="card">
+            <span class="status ok">✅ Verificado con captura</span>
+            <h3>2) Confirmación de cuenta</h3>
+            <ol class="step-list">
+              <li>Abre el email de confirmación.</li>
+              <li>Pulsa el enlace recibido.</li>
+              <li>Verás la pantalla “¡Email confirmado!”.</li>
+            </ol>
+            <figure>
+              <img src="./assets/screenshots/email-confirmed.png" alt="Pantalla de email confirmado">
+              <figcaption>Página de confirmación de cuenta publicada en fit4science.vercel.app.</figcaption>
+            </figure>
+          </article>
+          <article class="card">
+            <span class="status ok">✅ Verificado con captura</span>
+            <h3>3) Iniciar sesión (email)</h3>
+            <ol class="step-list">
+              <li>Introduce email y contraseña.</li>
+              <li>Opcional: marca “Recordarme”.</li>
+              <li>Pulsa <strong>Iniciar Sesión</strong>.</li>
+            </ol>
+            <figure>
+              <img src="./assets/screenshots/auth-login.png" alt="Pantalla de inicio de sesión">
+              <figcaption>Pantalla real de login.</figcaption>
+            </figure>
+          </article>
+          <article class="card">
+            <span class="status warn">🟡 Validado en UI (sin recorrido completo)</span>
+            <h3>4) Login con Google</h3>
+            <ol class="step-list">
+              <li>Desde login, pulsa <strong>Continuar con Google</strong>.</li>
+              <li>Completa la autorización en Google.</li>
+              <li>La app regresa con sesión iniciada.</li>
+            </ol>
+            <figure>
+              <img src="./assets/screenshots/auth-login.png" alt="Botón continuar con Google en login">
+              <figcaption>Botón real visible en la pantalla de login.</figcaption>
+            </figure>
+          </article>
+          <article class="card">
+            <span class="status ok">✅ Verificado con captura</span>
+            <h3>5) Recuperar contraseña</h3>
+            <ol class="step-list">
+              <li>Pulsa <strong>¿Olvidaste tu contraseña?</strong>.</li>
+              <li>Introduce tu email.</li>
+              <li>Recibirás enlace de reseteo.</li>
+            </ol>
+            <figure>
+              <img src="./assets/screenshots/auth-reset-request.png" alt="Pantalla para solicitar reset de contraseña">
+              <figcaption>Formulario real de solicitud de restablecimiento.</figcaption>
+            </figure>
+          </article>
+          <article class="card">
+            <span class="status neutral">ℹ️ Estado de enlace</span>
+            <h3>6) Página de reset (estado de enlace)</h3>
+            <p class="lead">Si el enlace caduca o es inválido, aparece una pantalla de aviso.</p>
+            <figure>
+              <img src="./assets/screenshots/reset-link-status.png" alt="Pantalla de enlace de reset no válido">
+              <figcaption>Respuesta real al abrir /reset-password sin token válido.</figcaption>
+            </figure>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="configuracion-inicial">
+        <h2>Configuración inicial</h2>
+        <p class="lead">Qué revisar al entrar por primera vez para dejar la app lista.</p>
+        <div class="grid">
+          <article class="card">
+            <span class="status ok">✅ Verificado con captura</span>
+            <h3>Home y asistente “Empieza aquí”</h3>
+            <ol class="step-list">
+              <li>Define objetivos semanales.</li>
+              <li>Ajusta días con el slider.</li>
+              <li>Bloquea días que no quieres recalcular.</li>
+            </ol>
+            <figure>
+              <img src="./assets/screenshots/home-start.png" alt="Home con panel empieza aquí">
+              <figcaption>Panel de configuración inicial visible en Home.</figcaption>
+            </figure>
+          </article>
+          <article class="card">
+            <span class="status warn">🟡 Validado en navegación</span>
+            <h3>Perfiles, mediciones y categorías</h3>
+            <ol class="step-list">
+              <li>Entra en <strong>Más</strong>.</li>
+              <li>Accede a <strong>Perfiles</strong>, <strong>Mediciones corporales</strong> y <strong>Categorías</strong>.</li>
+              <li>Configura horarios y preferencias.</li>
+            </ol>
+            <figure>
+              <img src="./assets/screenshots/more-options.png" alt="Menú más opciones">
+              <figcaption>Menú real con accesos de configuración.</figcaption>
+            </figure>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="registro-comidas">
+        <h2>Registrar comidas</h2>
+        <p class="lead">Modal de alta de comida y métodos de registro disponibles.</p>
+        <div class="grid">
+          <article class="card">
+            <span class="status ok">✅ Verificado con captura</span>
+            <h3>Alta rápida por categoría</h3>
+            <ol class="step-list">
+              <li>Pulsa el botón +.</li>
+              <li>Se abre “Añadir a [categoría]”.</li>
+              <li>Busca por nombre o código y añade.</li>
+            </ol>
+            <figure>
+              <img src="./assets/screenshots/add-food-modal.png" alt="Modal añadir comida">
+              <figcaption>Modal real con pestañas Buscar, Favoritos, Recientes y Más consumidos.</figcaption>
+            </figure>
+          </article>
+          <article class="card">
+            <span class="status ok">✅ Verificado con captura</span>
+            <h3>Auto-selección de categoría por hora</h3>
+            <ol class="step-list">
+              <li>La app sugiere desayuno/comida/merienda/cena automáticamente.</li>
+              <li>El modal muestra una pista con la categoría elegida.</li>
+              <li>Puedes cambiar categoría manualmente al guardar.</li>
+            </ol>
+            <figure>
+              <img src="./assets/screenshots/add-food-modal.png" alt="Pista de categoría automática">
+              <figcaption>Mensaje real: “Categoría seleccionada automáticamente”.</figcaption>
+            </figure>
+          </article>
+          <article class="card">
+            <span class="status ok">✅ Verificado con captura</span>
+            <h3>Escáner de código de barras</h3>
+            <ol class="step-list">
+              <li>Pulsa el botón de escaneo dentro del modal.</li>
+              <li>Apunta el código de barras.</li>
+              <li>Si hay coincidencia, la app propone alimento.</li>
+            </ol>
+            <figure>
+              <img src="./assets/screenshots/barcode-scanner.png" alt="Pantalla escáner de código de barras">
+              <figcaption>Pantalla real del escáner con línea de lectura.</figcaption>
+            </figure>
+          </article>
+          <article class="card">
+            <span class="status ok">✅ Verificado con captura</span>
+            <h3>Foto IA / análisis de plato</h3>
+            <ol class="step-list">
+              <li>Desde el modal, pulsa <strong>Foto IA</strong>.</li>
+              <li>Describe plato o adjunta foto (cámara/galería).</li>
+              <li>Analiza y añade el resultado.</li>
+            </ol>
+            <figure>
+              <img src="./assets/screenshots/ai-analysis-modal.png" alt="Modal analizar plato con IA">
+              <figcaption>Formulario real para análisis por IA.</figcaption>
+            </figure>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="progreso">
+        <h2>Entender tu progreso</h2>
+        <p class="lead">Dónde ver consumo, objetivo, macros y consistencia.</p>
+        <div class="grid">
+          <article class="card">
+            <span class="status ok">✅ Verificado con captura</span>
+            <h3>Resumen diario y macros</h3>
+            <ol class="step-list">
+              <li>Revisa <strong>Consumido</strong>, <strong>Objetivo</strong> y <strong>Restante</strong>.</li>
+              <li>Consulta barras de proteína, grasas y carbohidratos.</li>
+              <li>Controla rachas en “Consistencia semanal”.</li>
+            </ol>
+            <figure>
+              <img src="./assets/screenshots/home-macros.png" alt="Home con nutrición hoy y macros">
+              <figcaption>Pantalla real de progreso diario en Home.</figcaption>
+            </figure>
+          </article>
+          <article class="card">
+            <span class="status warn">🟡 Validado en navegación</span>
+            <h3>Historial y revisión de objetivos</h3>
+            <p class="lead">La app incluye pestaña de historial y acciones de ajuste semanal. En esta auditoría no se
+              completó un recorrido con captura final de ambos flujos.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="funciones-avanzadas">
+        <h2>Funciones avanzadas</h2>
+        <p class="lead">Opciones extra para personalizar uso y seguimiento.</p>
+        <div class="grid">
+          <article class="card">
+            <span class="status warn">🟡 Validado en navegación</span>
+            <h3>Gestión de categorías y horarios</h3>
+            <p class="lead">Desde <strong>Más → Categorías</strong> puedes ajustar franjas horarias para mejorar la
+              auto-selección de comidas.</p>
+          </article>
+          <article class="card">
+            <span class="status warn">🟡 Validado en navegación</span>
+            <h3>Perfiles y mediciones corporales</h3>
+            <p class="lead">Accesos disponibles desde <strong>Más</strong> para perfiles de usuario, perímetros, pliegues e
+              histórico de evolución.</p>
+          </article>
+          <article class="card">
+            <span class="status warn">🟡 Detectado en interfaz/código</span>
+            <h3>Sincronización con nube</h3>
+            <p class="lead">Se detecta soporte de sincronización y recuperación de perfiles en la nube. Recomendado validar
+              con cuenta real antes de publicación de esta guía como “cerrada”.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="ayuda">
+        <h2>Ayuda y resolución de dudas</h2>
+        <p class="lead">Canales integrados para feedback, bugs y seguimiento.</p>
+        <div class="grid">
+          <article class="card">
+            <span class="status warn">🟡 Detectado en interfaz/código</span>
+            <h3>Sugerencias y reporte de errores</h3>
+            <ol class="step-list">
+              <li>Entra en <strong>Más</strong>.</li>
+              <li>Abre <strong>Sugerencias</strong> o <strong>Reportar error</strong>.</li>
+              <li>Crea ticket y revisa respuestas en conversación.</li>
+            </ol>
+            <p class="lead">En auditorías previas se observó este flujo en UI; conviene validar permisos/RLS activos en
+              producción para listar datos sin errores 401.</p>
+          </article>
+          <article class="card">
+            <span class="status warn">🟡 Detectado en DOM</span>
+            <h3>Conversaciones y respuestas</h3>
+            <p class="lead">Existe modal de conversación para seguimiento de respuestas sobre ideas/errores. No se completó
+              conversación real durante esta revisión.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="flujo-diario">
+        <h2>Flujo diario recomendado</h2>
+        <p class="lead">Rutina mínima para usar Fit4Science de forma efectiva.</p>
+        <ol class="timeline">
+          <li><strong>Mañana:</strong> revisa objetivo del día y macros restantes en Home.</li>
+          <li><strong>Antes de comer:</strong> añade comida desde + y usa búsqueda/favoritos/recientes.</li>
+          <li><strong>Si hay envase:</strong> prueba escáner de código de barras.</li>
+          <li><strong>Si cocinas/plato mixto:</strong> usa Foto IA y ajusta cantidades.</li>
+          <li><strong>Noche:</strong> revisa consistencia semanal e histórico.</li>
+          <li><strong>Semanal:</strong> actualiza peso/mediciones y revisa objetivos.</li>
+        </ol>
+
+        <h3 style="margin-top:18px;">Checklist de onboarding (primer día)</h3>
+        <div class="checklist">
+          <label class="check-item"><input type="checkbox">He creado mi cuenta y confirmé email.</label>
+          <label class="check-item"><input type="checkbox">He revisado “Empieza aquí” y objetivos base.</label>
+          <label class="check-item"><input type="checkbox">He añadido al menos una comida por cada franja principal.</label>
+          <label class="check-item"><input type="checkbox">He probado escáner o Foto IA.</label>
+          <label class="check-item"><input type="checkbox">He revisado macros y restante del día.</label>
+        </div>
+      </section>
+
+      <section class="section" id="auditoria">
+        <h2>Cobertura de auditoría de flujos</h2>
+        <p class="lead">Estado de verificación de los 30 flujos solicitados. “Verificado” = evidencia de UI real. “Parcial”
+          = detectado en UI/código, pendiente de recorrido completo.</p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Flujo</th>
+                <th>Estado</th>
+                <th>Evidencia</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>Registro con email</td><td>✅ Verificado</td><td>auth-register.png</td></tr>
+              <tr><td>2</td><td>Confirmación de cuenta</td><td>✅ Verificado</td><td>email-confirmed.png</td></tr>
+              <tr><td>3</td><td>Login con email</td><td>✅ Verificado</td><td>auth-login.png</td></tr>
+              <tr><td>4</td><td>Login con Google</td><td>🟡 Parcial</td><td>Botón visible + flujo detectado en código</td></tr>
+              <tr><td>5</td><td>Reset de contraseña</td><td>✅ Verificado</td><td>auth-reset-request.png, reset-link-status.png</td></tr>
+              <tr><td>6</td><td>Pantalla Home</td><td>✅ Verificado</td><td>home-start.png, home-macros.png</td></tr>
+              <tr><td>7</td><td>Objetivos base diarios</td><td>🟡 Parcial</td><td>Panel “Empieza aquí” + navegación detectada</td></tr>
+              <tr><td>8</td><td>Revisión de objetivos</td><td>🟡 Parcial</td><td>UI detectada, sin captura de ciclo completo</td></tr>
+              <tr><td>9</td><td>Registro manual de alimentos</td><td>✅ Verificado</td><td>add-food-modal.png</td></tr>
+              <tr><td>10</td><td>Buscar alimentos</td><td>✅ Verificado</td><td>add-food-modal.png</td></tr>
+              <tr><td>11</td><td>Favoritos</td><td>🟡 Parcial</td><td>Pestaña visible en modal</td></tr>
+              <tr><td>12</td><td>Recientes</td><td>🟡 Parcial</td><td>Pestaña visible en modal</td></tr>
+              <tr><td>13</td><td>Más consumidos</td><td>🟡 Parcial</td><td>Pestaña visible en modal</td></tr>
+              <tr><td>14</td><td>Crear alimento nuevo</td><td>🟡 Parcial</td><td>Flujo detectado en UI/código</td></tr>
+              <tr><td>15</td><td>Editar alimento</td><td>🟡 Parcial</td><td>Flujo detectado en UI/código</td></tr>
+              <tr><td>16</td><td>Vincular código de barras</td><td>🟡 Parcial</td><td>Flujo detectado (barcode manager)</td></tr>
+              <tr><td>17</td><td>Escáner de código de barras</td><td>✅ Verificado</td><td>barcode-scanner.png</td></tr>
+              <tr><td>18</td><td>Foto IA etiqueta/plato</td><td>✅ Verificado</td><td>ai-analysis-modal.png</td></tr>
+              <tr><td>19</td><td>Registro por categorías</td><td>✅ Verificado</td><td>add-food-modal.png (“Añadir a Cena”)</td></tr>
+              <tr><td>20</td><td>Auto-selección por hora</td><td>✅ Verificado</td><td>Hint de categoría automática</td></tr>
+              <tr><td>21</td><td>Gestión de categorías y horarios</td><td>🟡 Parcial</td><td>Acceso detectado en Más/Categorías</td></tr>
+              <tr><td>22</td><td>Historial diario</td><td>🟡 Parcial</td><td>Pestaña detectada, sin captura de flujo completo</td></tr>
+              <tr><td>23</td><td>Macros del día</td><td>✅ Verificado</td><td>home-macros.png</td></tr>
+              <tr><td>24</td><td>Perfiles</td><td>🟡 Parcial</td><td>Acceso detectado en Más</td></tr>
+              <tr><td>25</td><td>Mediciones corporales</td><td>🟡 Parcial</td><td>Acceso detectado en Más</td></tr>
+              <tr><td>26</td><td>Ajustes de cuenta</td><td>🟡 Parcial</td><td>Menú de ajustes detectado</td></tr>
+              <tr><td>27</td><td>Sugerencias / reportar errores</td><td>🟡 Parcial</td><td>Modales y botones detectados</td></tr>
+              <tr><td>28</td><td>Conversaciones / respuestas</td><td>🟡 Parcial</td><td>conversation-modal detectado</td></tr>
+              <tr><td>29</td><td>Sincronización nube</td><td>🟡 Parcial</td><td>Funciones y flujos de sync detectados</td></tr>
+              <tr><td>30</td><td>Flujo diario recomendado</td><td>✅ Definido</td><td>Basado en flujos verificados</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section" id="faq">
+        <h2>Preguntas frecuentes</h2>
+        <details>
+          <summary>¿Necesito usar todas las funciones para empezar?</summary>
+          <p>No. Con login + registro de comidas + revisión de macros en Home ya tienes el núcleo funcionando. Escáner e IA
+            son complementarios.</p>
+        </details>
+        <details>
+          <summary>¿Qué hago si no encuentro un alimento?</summary>
+          <p>Prueba en este orden: Buscar por nombre, buscar por código de barras, escanear etiqueta, y si hace falta crear
+            alimento manual con macros por 100 g.</p>
+        </details>
+        <details>
+          <summary>¿Puedo desactivar la categoría automática?</summary>
+          <p>Sí. En el apartado de categorías/horarios puedes ajustar selección automática y rangos horarios para cada tipo de
+            comida.</p>
+        </details>
+        <details>
+          <summary>¿Qué pasa si un flujo aparece como “Parcial” en esta guía?</summary>
+          <p>Significa que el flujo existe y se detectó en UI/código, pero no se documentó con recorrido end-to-end completo en
+            esta auditoría. Se recomienda completar esas capturas en la siguiente iteración.</p>
+        </details>
+      </section>
+
+      <section class="footer-box">
+        <h2 style="margin:0 0 8px; color:#fff;">Siguiente paso recomendado</h2>
+        <p style="margin:0; color:#cbd5e1;">Si es tu primer día: completa la checklist de onboarding y registra tus primeras 3
+          comidas (mañana, mediodía y noche). Desde ahí ya tendrás métricas útiles en Home.</p>
+        <div class="cta-row" style="margin-top:14px;">
+          <a class="btn primary" href="https://fit4science-app.vercel.app/planner.html" target="_blank"
+            rel="noopener">Abrir Fit4Science</a>
+          <a class="btn secondary" href="https://github.com/Juan-Arano/fit4science" target="_blank"
+            rel="noopener">Repositorio</a>
+        </div>
+        <p class="small">Guía generada a partir de capturas y auditoría real de interfaces disponibles a fecha 6 de marzo de
+          2026.</p>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const search = document.getElementById('toc-search');
+      const links = Array.from(document.querySelectorAll('#toc-links a'));
+      if (!search || !links.length) return;
+
+      search.addEventListener('input', () => {
+        const query = search.value.trim().toLowerCase();
+        links.forEach((link) => {
+          const text = link.textContent.toLowerCase();
+          link.style.display = !query || text.includes(query) ? 'block' : 'none';
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
